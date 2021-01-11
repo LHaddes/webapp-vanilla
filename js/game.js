@@ -16,10 +16,12 @@ function GameLoop(){
     if(x + 100 >= canvas.width || x <= 0)
     {
         boolX = !boolX;
+        ctx.fillStyle = "red";
     }
     if(y + 100 >= canvas.height || y <= 0)
     {
         boolY = !boolY;
+        ctx.fillStyle = "blue";
     }
 
     if(boolX == false)
