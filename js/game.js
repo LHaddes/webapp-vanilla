@@ -5,6 +5,19 @@ const ctx = canvas.getContext("2d");
 canvas.width = document.documentElement.clientWidth || document.body.clientWidth;
 canvas.height = document.documentElement.clientHeight || document.body.clientHeight;
 
+let gyroValue = {
+    x: 0,
+    y: 0,
+    z: 0
+}
+gyroscope.addEventListener('reading', e => {
+    gyroValue.x += gyroscope.x
+    gyroValue.y += gyroscope.y
+    gyroValue.z += gyroscope.z
+    document.getElementById("gyro").innerHTML = Math.floor(gyroValue.x) + "<br>" + Math.floor(gyroValue.y) + "<br>" + Math.floor(gyroValue.z)
+});
+gyroscope.start();
+
 function startup() {
     /*canvas.addEventListener("touchstart", handleStart, false);
     canvas.addEventListener("touchend", handleEnd, false);
@@ -49,7 +62,7 @@ function RandomColor(){
     return color;
 }
 
-function RectCreate(x, y, w, h, color, dw, dy)
+function RectCreate(x, y, w, h, color, dx, dy)
 {
     let obj = {
         x: x,
@@ -57,11 +70,24 @@ function RectCreate(x, y, w, h, color, dw, dy)
         w: w,
         h: h,
         color: color,
-        dw: dw,
+        dx: dx,
         dy: dy,
         draw: RectDraw
     }
     return obj
+}
+
+function CircleCreate(x, y, radius, dx, dy, color) {
+    let circle = {
+        x: x,
+        y: y,
+        radius : radius,
+        dx: dx,
+        dy: dy,
+        color : color,
+        draw: CircleDraw
+    };
+    return circle
 }
 
 let rect = RectCreate(10, 10, 100, 100, "red", 2, 2);
@@ -70,6 +96,13 @@ let rect2 = RectCreate(200, 200, 70, 70, "green", 4, 4);
 let listRect = [
     rect,
     rect2
+]
+
+
+let circle = CircleCreate(canvas.width / 2, canvas.height / 2, 100, gyroValue.x, gyroValue.y, "blue");
+
+let listCircle = [
+    circle
 ]
 
 
@@ -90,6 +123,10 @@ function GameLoop(){
     {
         obj.draw()
     }
+    for(const obj of listCircle)  //foreach
+    {
+        obj.draw()
+    }
 
     /*listRect.forEach((obj) => {obj.draw() }) //foreach*/
     
@@ -102,14 +139,34 @@ function RectDraw()
 
     if(this.x + this.w >= canvas.width || this.x <= 0)
     {
-        this.dw *= -1;
+        this.dx *= -1;
     }
     if(this.y + this.h >= canvas.height || this.y <= 0)
     {
         this.dy *= -1;
     }
 
-    this.x += this.dw;
+    this.x += this.dx;
+    this.y += this.dy;
+}
+
+function CircleDraw() {
+
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    ctx.fill();
+
+    if(this.x + this.w >= canvas.width || this.x <= 0)
+    {
+        this.dx *= -1;
+    }
+    if(this.y + this.h >= canvas.height || this.y <= 0)
+    {
+        this.dy *= -1;
+    }
+
+    this.x += this.dx;
     this.y += this.dy;
 }
 
