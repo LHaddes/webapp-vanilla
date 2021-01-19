@@ -4,10 +4,10 @@ const ctx = canvas.getContext("2d");
 
 canvas.width = document.documentElement.clientWidth || document.body.clientWidth;
 canvas.height = document.documentElement.clientHeight || document.body.clientHeight;
-
+/*
 let debugText = new Text();
 debugText = document.getElementById('debug');
-
+*/
 let gyroscope = new Gyroscope({frequency: 60});
 
 let gyroValue = {
@@ -106,7 +106,7 @@ let listRect = [
 ]
 
 
-let circle = CircleCreate(canvas.width / 2, canvas.height / 2, 100, gyroValue.x, gyroValue.y, "blue");
+let circle = CircleCreate(canvas.width / 2, canvas.height / 2, 100, 0, 0, "blue");
 
 let listCircle = [
     circle
@@ -115,8 +115,8 @@ let listCircle = [
 
 
 function GameLoop(){
-    debugText.textContent = "Debug console : ";
-    debugText.textContent += "xGyro : " + gyroValue.x + "  yGyro : " + gyroValue.y + "  zGyro : " + gyroValue.z;
+    //debugText.textContent = "Debug console : ";
+    //debugText.textContent += "xGyro : " + gyroValue.x + "  yGyro : " + gyroValue.y + "  zGyro : " + gyroValue.z;
 
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -166,18 +166,28 @@ function CircleDraw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     ctx.fill();
-
-    if(this.x + this.w >= canvas.width || this.x <= 0)
+    
+    if (this.x + this.radius >= canvas.clientWidth) 
     {
-        this.dx *= -1;
+        this.x = canvas.clientWidth - this.radius;
     }
-    if(this.y + this.h >= canvas.height || this.y <= 0)
+    if (this.x - this.radius <= 0) 
     {
-        this.dy *= -1;
+        this.x = 0 + this.radius;
     }
 
-    this.x += this.dx;
-    this.y += this.dy;
+    if (this.y + this.radius >= canvas.clientHeight) 
+    {
+        this.y = canvas.clientHeight - this.radius;
+    }
+    if (this.y - this.radius + circle.ySpeed <= 0) 
+    {
+        this.y = 0 + this.radius;
+    }
+
+
+    this.x += gyroValue.x;
+    this.y += gyroValue.y;
 }
 
 
