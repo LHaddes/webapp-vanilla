@@ -5,6 +5,8 @@ const ctx = canvas.getContext("2d");
 canvas.width = document.documentElement.clientWidth || document.body.clientWidth;
 canvas.height = document.documentElement.clientHeight || document.body.clientHeight;
 
+let gyroscope = new Gyroscope({frequency: 60});
+
 let gyroValue = {
     x: 0,
     y: 0,
