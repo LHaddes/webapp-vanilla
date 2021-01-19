@@ -34,7 +34,7 @@ function RectCreate(x, y, w, h, color, dw, dy)
         dy: dy,
         draw: RectDraw
     }
-    listRect.join(obj);
+    listRect.push(obj)
     return obj
 }
 
