@@ -5,6 +5,9 @@ const ctx = canvas.getContext("2d");
 canvas.width = document.documentElement.clientWidth || document.body.clientWidth;
 canvas.height = document.documentElement.clientHeight || document.body.clientHeight;
 
+let debugText = new Text();
+debugText = document.getElementById('debug');
+
 let gyroscope = new Gyroscope({frequency: 60});
 
 let gyroValue = {
@@ -12,13 +15,7 @@ let gyroValue = {
     y: 0,
     z: 0
 }
-gyroscope.addEventListener('reading', e => {
-    gyroValue.x += gyroscope.x
-    gyroValue.y += gyroscope.y
-    gyroValue.z += gyroscope.z
-    document.getElementById("gyro").innerHTML = Math.floor(gyroValue.x) + "<br>" + Math.floor(gyroValue.y) + "<br>" + Math.floor(gyroValue.z)
-});
-gyroscope.start();
+
 
 function startup() {
     /*canvas.addEventListener("touchstart", handleStart, false);
@@ -27,8 +24,16 @@ function startup() {
     canvas.addEventListener("touchmove", handleMove, false);*/
 
     canvas.addEventListener("mouseup", releaseClick, false);
+
+    gyroscope.addEventListener('reading', e => {
+        gyroValue.x += gyroscope.x
+        gyroValue.y += gyroscope.y
+        gyroValue.z += gyroscope.z
+        document.getElementById("gyro").innerHTML = Math.floor(gyroValue.x) + "<br>" + Math.floor(gyroValue.y) + "<br>" + Math.floor(gyroValue.z)
+    });
 }
 
+gyroscope.start();
 document.addEventListener("DOMContentLoaded", startup);
 
 
@@ -110,6 +115,9 @@ let listCircle = [
 
 
 function GameLoop(){
+    debugText.textContent = "Debug console : ";
+    debugText.textContent += "xGyro : " + gyroValue.x + "  yGyro : " + gyroValue.y + "  zGyro : " + gyroValue.z;
+
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
