@@ -19,16 +19,7 @@ function handleStart(evt) {
     
     var touches = evt.changedTouches;
   
-    for (var i = 0; i < touches.length; i++) {
-      console.log("touchstart:" + i + "...");
-      ongoingTouches.push(copyTouch(touches[i]));
-      var color = colorForTouch(touches[i]);
-      ctx.beginPath();
-      ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false);  // a circle at the start
-      ctx.fillStyle = color;
-      ctx.fill();
-      console.log("touchstart:" + i + ".");
-    }
+    RectCreate(5, 5, 50, 50, "blue", 10, 10);
 }
 
 function RectCreate(x, y, w, h, color, dw, dy)
@@ -43,11 +34,12 @@ function RectCreate(x, y, w, h, color, dw, dy)
         dy: dy,
         draw: RectDraw
     }
+    listRect.join(obj);
     return obj
 }
 
-let rect = RectCreate(10, 10, 100, 100, "red", 2, 2)
-let rect2 = RectCreate(200, 200, 70, 70, "green", 4, 4)
+let rect = RectCreate(10, 10, 100, 100, "red", 2, 2);
+let rect2 = RectCreate(200, 200, 70, 70, "green", 4, 4);
 
 let listRect = [
     rect,
