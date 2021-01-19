@@ -6,20 +6,47 @@ canvas.width = document.documentElement.clientWidth || document.body.clientWidth
 canvas.height = document.documentElement.clientHeight || document.body.clientHeight;
 
 function startup() {
-    canvas.addEventListener("touchstart", handleStart, false);
+    /*canvas.addEventListener("touchstart", handleStart, false);
     canvas.addEventListener("touchend", handleEnd, false);
     canvas.addEventListener("touchcancel", handleCancel, false);
-    canvas.addEventListener("touchmove", handleMove, false);
-  }
+    canvas.addEventListener("touchmove", handleMove, false);*/
+
+    canvas.addEventListener("mouseup", releaseClick, false);
+}
+
+document.addEventListener("DOMContentLoaded", startup);
 
 
-function handleStart(evt) {
+function releaseClick(evt) {
     evt.preventDefault();
-    console.log("touchstart.");
+    
     
     var touches = evt.changedTouches;
+
+    let color = RandomColor();
+    console.log(color);
+
+    let x = Math.floor(Math.random() * 200);
+    let posX = Math.floor(Math.random() * (canvas.width - x));
+    let posY = Math.floor(Math.random() * (canvas.height - x));
+    let speedX = Math.floor(Math.random() * 12) * (Math.round(Math.random()) * 2 - 1);
+    let speedY = speedX * (Math.round(Math.random()) * 2 - 1);
   
-    RectCreate(5, 5, 50, 50, "blue", 10, 10);
+    let rect = RectCreate(posX, posY, x, x, color, speedX, speedY);
+    listRect.push(rect);
+}
+
+function RandomColor(){
+    let colorList = [
+        "ef476f",
+        "ffd166",
+        "06d6a0",
+        "118ab2",
+        "073b4c"
+    ]
+
+    let color = '#' + colorList[Math.floor(Math.random() * colorList.length)];
+    return color;
 }
 
 function RectCreate(x, y, w, h, color, dw, dy)
@@ -34,7 +61,6 @@ function RectCreate(x, y, w, h, color, dw, dy)
         dy: dy,
         draw: RectDraw
     }
-    listRect.push(obj)
     return obj
 }
 
