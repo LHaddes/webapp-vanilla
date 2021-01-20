@@ -186,8 +186,8 @@ function CircleDraw() {
     }
 
 
-    this.x += gyroValue.x;
-    this.y += gyroValue.y;
+    this.x += gyroValue.y;
+    this.y += gyroValue.x / 2;
 }
 
 
