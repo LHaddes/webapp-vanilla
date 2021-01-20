@@ -106,7 +106,7 @@ let listRect = [
 ]
 
 
-let circle = CircleCreate(canvas.width / 2, canvas.height / 2, 100, 0, 0, "blue");
+let circle = CircleCreate(canvas.width / 2, canvas.height / 2, 50, 0, 0, "blue");
 
 let listCircle = [
     circle
@@ -180,7 +180,7 @@ function CircleDraw() {
     {
         this.y = canvas.clientHeight - this.radius;
     }
-    if (this.y - this.radius + circle.ySpeed <= 0) 
+    if (this.y - this.radius <= 0) 
     {
         this.y = 0 + this.radius;
     }
