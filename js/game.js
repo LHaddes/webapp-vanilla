@@ -16,14 +16,28 @@ let gyroValue = {
     z: 0
 }
 
+let touchPos = {
+    x: 0,
+    y: 0
+}
+
 
 function startup() {
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
     /*canvas.addEventListener("touchstart", handleStart, false);
     canvas.addEventListener("touchend", handleEnd, false);
     canvas.addEventListener("touchcancel", handleCancel, false);
     canvas.addEventListener("touchmove", handleMove, false);*/
 
-    canvas.addEventListener("mouseup", releaseClick, false);
+    var rectCanvas = canvas.getBoundingClientRect();
+
+    canvas.addEventListener("mouseup", releaseClick, e => {
+        touchPos.x = e.clientX,
+        touchPos.y = e.clientY}, false);
 
     gyroscope.addEventListener('reading', e => {
         gyroValue.x += gyroscope.x
@@ -39,6 +53,7 @@ document.addEventListener("DOMContentLoaded", startup);
 
 function releaseClick(evt) {
     evt.preventDefault();
+
     
     
     var touches = evt.changedTouches;
@@ -46,23 +61,51 @@ function releaseClick(evt) {
     let color = RandomColor();
     console.log(color);
 
-    let x = Math.floor(Math.random() * 200);
+    let x = Math.floor(Math.random() * 200);/*
     let posX = Math.floor(Math.random() * (canvas.width - x));
-    let posY = Math.floor(Math.random() * (canvas.height - x));
+    let posY = Math.floor(Math.random() * (canvas.height - x));*/
+
     let speedX = Math.floor(Math.random() * 12) * (Math.round(Math.random()) * 2 - 1);
     let speedY = speedX * (Math.round(Math.random()) * 2 - 1);
+
+    let radius = 10 + Math.random() * 20;
   
-    let rect = RectCreate(posX, posY, x, x, color, speedX, speedY);
+    let rect = RectCreate(touchPos.x, touchPos.y, x, x, color, speedX, speedY);
     listRect.push(rect);
+
+    let circle = CircleCreate(touchPos.x, touchPos.y, radius, speedX, speedY, color);
+    listCircle.push(circle);
 }
 
 function RandomColor(){
     let colorList = [
-        "ef476f",
-        "ffd166",
-        "06d6a0",
-        "118ab2",
-        "073b4c"
+        "10002b",
+        "240046",
+        "3c096c",
+        "5a189a",
+        "7b2cbf",
+        "9d4edd",
+        "c77dff",
+        "e0aaff",
+        "a564d3",
+        "b66ee8",
+        "c879ff",
+        "d689ff",
+        "e498ff",
+        "f2a8ff",
+        "ffb7ff",
+        "ffc4ff",
+        "ffc9ff",
+        "ffceff",
+        "b28dff",
+        "bc98ff",
+        "edf2fb",
+        "e2eafc",
+        "d7e3fc",
+        "ccdbfd",
+        "c1d3fe",
+        "b6ccfe",
+        "abc4ff"
     ]
 
     let color = '#' + colorList[Math.floor(Math.random() * colorList.length)];
@@ -97,8 +140,8 @@ function CircleCreate(x, y, radius, dx, dy, color) {
     return circle
 }
 
-let rect = RectCreate(10, 10, 100, 100, "red", 2, 2);
-let rect2 = RectCreate(200, 200, 70, 70, "green", 4, 4);
+let rect = RectCreate(10, 10, 100, 100, RandomColor(), 2, 2);
+let rect2 = RectCreate(200, 200, 70, 70, RandomColor(), 4, 4);
 
 let listRect = [
     rect,
@@ -106,7 +149,7 @@ let listRect = [
 ]
 
 
-let circle = CircleCreate(canvas.width / 2, canvas.height / 2, 50, 0, 0, "blue");
+let circle = CircleCreate(canvas.width / 2, canvas.height / 2, 50, 0, 0, RandomColor());
 
 let listCircle = [
     circle
@@ -118,7 +161,7 @@ function GameLoop(){
     //debugText.textContent = "Debug console : ";
     //debugText.textContent += "xGyro : " + gyroValue.x + "  yGyro : " + gyroValue.y + "  zGyro : " + gyroValue.z;
 
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     //rect.draw();
