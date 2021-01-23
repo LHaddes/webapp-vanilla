@@ -35,9 +35,9 @@ function startup() {
 
     var rectCanvas = canvas.getBoundingClientRect();
 
-    canvas.addEventListener("mouseup", releaseClick, e => {
-        touchPos.x = e.clientX,
-        touchPos.y = e.clientY}, false);
+    canvas.addEventListener("mouseup", releaseClick/*, e => {
+        touchPos.x = e.clientWidth,
+        touchPos.y = e.clientY}*/, false);
 
     gyroscope.addEventListener('reading', e => {
         gyroValue.x += gyroscope.x
@@ -54,27 +54,33 @@ document.addEventListener("DOMContentLoaded", startup);
 function releaseClick(evt) {
     evt.preventDefault();
 
-    
+    touchPos.x = evt.clientX;
+    touchPos.y = evt.clientY
+
+    console.log("x: " + touchPos.x + " ;  y:" + touchPos.y)
     
     var touches = evt.changedTouches;
+    
+        let color = RandomColor();
+        console.log(color);
 
-    let color = RandomColor();
-    console.log(color);
+      /*  let x = Math.floor(Math.random() * 200);
+        let posX = Math.floor(Math.random() * (canvas.width - x));
+        let posY = Math.floor(Math.random() * (canvas.height - x));*/
 
-    let x = Math.floor(Math.random() * 200);/*
-    let posX = Math.floor(Math.random() * (canvas.width - x));
-    let posY = Math.floor(Math.random() * (canvas.height - x));*/
+        let speedX = Math.floor(Math.random() * 12) * (Math.round(Math.random()) * 2 - 1);
+        let speedY = speedX * (Math.round(Math.random()) * 2 - 1);
 
-    let speedX = Math.floor(Math.random() * 12) * (Math.round(Math.random()) * 2 - 1);
-    let speedY = speedX * (Math.round(Math.random()) * 2 - 1);
+        let radius = 10 + Math.random() * 20;
+  /*
+        let rect = RectCreate(touchPos.x, touchPos.y, x, x, color, speedX, speedY);
+        listRect.push(rect);
+*/
+        let circle = CircleCreate(touchPos.x, touchPos.y, radius, speedX, speedY, color);
+        listCircle.push(circle);
+      
 
-    let radius = 10 + Math.random() * 20;
-  
-    let rect = RectCreate(touchPos.x, touchPos.y, x, x, color, speedX, speedY);
-    listRect.push(rect);
-
-    let circle = CircleCreate(touchPos.x, touchPos.y, radius, speedX, speedY, color);
-    listCircle.push(circle);
+    
 }
 
 function RandomColor(){
